@@ -2,6 +2,7 @@ package com.example.testprocessor.mock
 
 import com.example.testprocessor.TestInput
 import com.example.testprocessor.TestOutput
+import com.example.testprocessor.TestProcessorApplication
 import com.example.testprocessor.TestProcessorConfiguration
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -20,7 +21,7 @@ import org.springframework.integration.support.MessageBuilder
 
 @EnableTestBinder
 @SpringBootTest(
-    classes = [TestProcessorTestApplication::class],
+    classes = [TestProcessorApplication::class],
     properties = ["com.example.testprocessor.addition=Soap",
         "spring.application.name=test-processor",
         "spring.cloud.function.definition=testProcessor",
@@ -57,13 +58,4 @@ class TestMockBinderTests {
         // then
         assertThat(output.surname).isEqualTo("Joe Soap")
     }
-}
-
-
-@SpringBootApplication(proxyBeanMethods = false)
-@Import(TestProcessorConfiguration::class)
-class TestProcessorTestApplication
-
-fun main(args: Array<String>) {
-    runApplication<TestProcessorTestApplication>(*args)
 }
