@@ -14,7 +14,6 @@ class TestcontainersConfiguration {
     @ServiceConnection
     fun kafkaContainer(): KafkaContainer {
         return KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
-            .withKraft()
             .withLogConsumer { logConsumer ->
                 when (logConsumer.type!!) {
                     OutputFrame.OutputType.STDOUT -> logger.info("kafka:{}", logConsumer.utf8StringWithoutLineEnding)

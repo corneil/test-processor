@@ -30,6 +30,9 @@ configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
+    all {
+        exclude(group = "com.vaadin.external.google", module = "android-json")
+    }
 }
 
 repositories {
