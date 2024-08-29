@@ -5,24 +5,23 @@ import com.example.testprocessor.TestOutput
 import com.example.testprocessor.TestProcessorConfiguration
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.cloud.stream.binder.test.EnableTestBinder
 import org.springframework.cloud.stream.binder.test.InputDestination
 import org.springframework.cloud.stream.binder.test.OutputDestination
+import org.springframework.context.annotation.Import
 import org.springframework.integration.support.MessageBuilder
 
-import org.assertj.core.api.Assertions.assertThat
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Import
-
 @EnableTestBinder
-@SpringBootTest(classes = [TestProcessorTestApplication::class],
-    properties = ["com.example.testprocessor.addition=Malan",
+@SpringBootTest(
+    classes = [TestProcessorTestApplication::class],
+    properties = ["com.example.testprocessor.addition=Soap",
         "spring.application.name=test-processor",
         "spring.cloud.function.definition=testProcessor",
         "spring.cloud.stream.function.bindings.testProcessor-in-0=input",
@@ -39,11 +38,12 @@ class TestMockBinderTests {
 
     @Autowired
     lateinit var output: OutputDestination
+
     @Test
     fun testProcessorBinding() {
 
         // given
-        val inputData = TestInput("Jacques", 1.0)
+        val inputData = TestInput("Joe", 1.0)
         val message = MessageBuilder.withPayload(inputData).build()
         input.send(message)
         // when
@@ -55,15 +55,15 @@ class TestMockBinderTests {
         val mapper = jacksonObjectMapper()
         val output = mapper.readValue<TestOutput>(outputMessage.payload)
         // then
-        assertThat(output.surname).isEqualTo("Jacques Malan")
+        assertThat(output.surname).isEqualTo("Joe Soap")
     }
 }
-
 
 
 @SpringBootApplication(proxyBeanMethods = false)
 @Import(TestProcessorConfiguration::class)
 class TestProcessorTestApplication
+
 fun main(args: Array<String>) {
     runApplication<TestProcessorTestApplication>(*args)
 }
