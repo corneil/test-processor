@@ -74,10 +74,6 @@ class TestProcessorApplicationTests {
     lateinit var listenerContainer: KafkaListenerContainer
 
     @Test
-    fun contextLoads() {
-    }
-
-    @Test
     fun testProcessorBinding() {
         // given
         val mapper = jacksonObjectMapper()
@@ -105,7 +101,7 @@ class TestProcessorApplicationTests {
             .pollDelay(Duration.ofSeconds(0))
             .untilAsserted {
                 // when
-                assertThat(listenerContainer.hasMessages()).isTrue()
+                assertThat(listenerContainer.hasMessages()).`as`("has messages in queue").isTrue()
                 val outputMessage = listenerContainer.fetchMessage()
 
                 logger.info("received:{}", outputMessage)
