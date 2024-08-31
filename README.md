@@ -99,7 +99,15 @@ Testcontainers has been configured to use the following Docker images:
 
 Please review the tags of the used images and set them to the same as you're running in production.
 
+## Running Tests
 
+```shell
+cd java
+./gradlew test -Ptag=test
+./gradlew test -Ptag=integration
+# will probably hang when mock and container test are executed after each other
+./gradlew test 
+```
 
 ## SCDF Configuration
 
