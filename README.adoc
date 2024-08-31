@@ -5,54 +5,29 @@
 [source,shell]
 ----
 cd java
-./gradlew test -Ptag=test
-./gradlew test -Ptag=integration
-./gradlew test 
+./gradlew test -Ptag=test                 <1>
+./gradlew test -Ptag=integration          <2>
+./gradlew test -Ptag=integration -Pfork=1 <3>
+./gradlew test                            <4>
+./gradlew test -Pfork=1                   <5>
 
 cd ../kotlin
-./gradlew test -Ptag=test
-./gradlew test -Ptag=integration
-./gradlew test
+./gradlew test -Ptag=test                 <6>
+./gradlew test -Ptag=integration          <7>
+./gradlew test                            <8>
+./gradlew test -Pfork=1                   <9>
 ----
 
-== Problems
+<1> Java - execute `MockBinderTest` only
+<2> Java - execute all tests in `com.example.testprocessor.testcontainers`
+<3> Java - execute all tests in `com.example.testprocessor.testcontainers`, but use new JVM for each test
+<4> Java - execute all tests
+<5> Java - execute all tests, but use new JVM for each test
+<6> Kotlin - execute `MockBinderTest` only
+<7> Kotlin - execute all tests in `com.example.testprocessor.testcontainers`
+<8> Kotlin - execute all tests
+<9> Kotlin - execute all tests, but use new JVM for each test
 
-=== Kotlin
-
-[source,shell]
-----
-cd kotlin
-./gradlew test <1>
-./gradlew test -Pfork=1 <2>
-----
-
-<1> When running test with `test.useJunitPlatform.forkEvery 0` the `MockBinderTests` pass and `TestProcessorApplicationTests` fails
-<2> When running test with `test.useJunitPlatform.forkEvery 1` all tests pass
-
-=== Java
-
-[source,shell]
-----
-cd kotlin
-./gradlew test <1>
-./gradlew test -Pfork=1 <2>
-
-----
-<1> When running test with `test.useJunitPlatform.forkEvery 0` all but `MockBinderTests` fail
-
-<2> When running test with `test.useJunitPlatform.forkEvery 1` all tests pass except for `TestProcessorServiceConnectionTests`
-
-[source,shell]
-----
-./gradlew test
-----
-NOTE: All tests are executed but `MockBinderTests` fail.
-
-[source,shell]
-----
-./gradlew test -Ptag=integration
-----
-NOTE: All tests are executed but `MockBinderTests` fail.
 
 == Reference Documentation
 
