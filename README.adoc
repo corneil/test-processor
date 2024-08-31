@@ -85,34 +85,6 @@ To create the image, run the following goal:
 ./gradlew bootBuildImage
 ----
 
-=== Executable with Native Build Tools
-
-Use this option if you want to explore more options such as running your tests in a native image.
-The GraalVM `native-image` compiler should be installed and configured on your machine.
-
-NOTE: GraalVM 22.3+ is required.
-
-To create the executable, run the following goal:
-
-----
-$ ./gradlew nativeCompile
-----
-
-Then, you can run the app as follows:
-
-----
-$ build/native/nativeCompile/test-processor
-----
-
-You can also run your existing tests suite in a native image.
-This is an efficient way to validate the compatibility of your application.
-
-To run your existing tests in a native image, run the following goal:
-
-----
-$ ./gradlew nativeTest
-----
-
 === Gradle Toolchain support
 
 There are some limitations regarding Native Build Tools and Gradle toolchains.
@@ -148,7 +120,7 @@ _The image may not load in kind or minikube if there is a pod running that was c
 [source,shell]
 ----
 source ./deploy/k8s/export-dataflow-ip.sh
-./deploy/k8s/load-image.sh "example.com/library/test-processor:latest" true
+./deploy/k8s/load-image.sh "example.com/library/test-processor-kotlin:latest" true
 ----
 
 Register application and deploy stream.
