@@ -16,6 +16,8 @@ import org.springframework.cloud.stream.binder.test.EnableTestBinder;
 import org.springframework.cloud.stream.binder.test.InputDestination;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 )
 @Tag("test")
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 public class MockBinderTests {
     private final static Logger logger = LoggerFactory.getLogger(MockBinderTests.class);
 

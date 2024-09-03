@@ -1,5 +1,6 @@
 package com.example.testprocessor.testcontainers;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.KafkaContainer;
@@ -14,5 +15,11 @@ public class TestProcessorTestContainersTests extends TestProcessorTestBase {
     @DynamicPropertySource
     static void dynamicProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
+    }
+    @BeforeAll
+    static void setup() {
+        logger.info("starting:{}", kafkaContainer.getDockerImageName());
+        kafkaContainer.start();
+        logger.info("started:{}", kafkaContainer.getContainerId());
     }
 }

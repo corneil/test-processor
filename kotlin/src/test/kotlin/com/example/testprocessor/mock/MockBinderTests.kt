@@ -15,6 +15,8 @@ import org.springframework.cloud.stream.binder.test.EnableTestBinder
 import org.springframework.cloud.stream.binder.test.InputDestination
 import org.springframework.cloud.stream.binder.test.OutputDestination
 import org.springframework.integration.support.MessageBuilder
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.DirtiesContext.ClassMode
 
 @EnableTestBinder
 @SpringBootTest(
@@ -27,6 +29,7 @@ import org.springframework.integration.support.MessageBuilder
     ]
 )
 @Tag("test")
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class MockBinderTests {
     companion object {
         val logger = LoggerFactory.getLogger(MockBinderTests::class.java)!!
