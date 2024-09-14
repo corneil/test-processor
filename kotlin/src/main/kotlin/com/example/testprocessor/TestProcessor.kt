@@ -16,7 +16,12 @@ class TestProcessor(val config: TestConfiguration) : Function<TestInput, TestOut
 }
 
 @ConfigurationProperties(prefix = "com.example.testprocessor")
-data class TestConfiguration(val addition: String = "N/A")
+class TestConfiguration {
+    /**
+     * Will be added to name to make fullName
+     */
+    var addition: String = "N/A"
+}
 
 data class TestInput(val name: String, val value: Double)
 data class TestOutput(val name: String, val value: Double, val fullName: String)

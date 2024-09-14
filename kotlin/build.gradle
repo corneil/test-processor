@@ -1,8 +1,13 @@
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.apache.commons.text.StringEscapeUtils
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
+        classpath 'org.apache.commons:commons-text:1.12.0'
         if ('true' == project.findProperty('useNative')) {
             classpath 'org.graalvm.buildtools:native-gradle-plugin:0.10.2'
         }
@@ -13,6 +18,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
     id 'org.springframework.boot' version '3.3.3'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.jetbrains.kotlin.kapt' version '1.9.25'
 }
 if ('true' == project.findProperty('useNative')) {
     apply plugin: 'org.graalvm.buildtools.native'
@@ -53,6 +59,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
@@ -80,13 +87,21 @@ kotlin {
 tasks.named('test') {
     useJUnitPlatform {
         def tag = findProperty("tag")
-        if(tag) {
+        if (tag) {
             includeTags tag
         }
-        forkEvery Integer.parseInt(project.findProperty('fork')?: "0")
+        forkEvery Integer.parseInt(project.findProperty('fork') ?: "1")
     }
     testLogging {
         showStandardStreams = true
         events('standardOut', 'started', 'passed', 'skipped', 'failed')
     }
+    reports {
+        junitXml.outputLocation = layout.buildDirectory.dir("test-junit-xml")
+    }
+}
+
+bootBuildImage {
+    pullPolicy = 'IF_NOT_PRESENT'
+    imageName = "${project.name}:latest"
 }

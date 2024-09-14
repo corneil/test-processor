@@ -1,0 +1,2 @@
+#!/bin/bash
+yq -p=xml -o=json "$1" | jq --arg file $1 '.testsuite | select(."+@failures" != "0" or ."+@errors" != "0") | $file + " - " + ."+@name" + ", failures:" + ."+@failures" + ", errors:" + ."+@errors"'

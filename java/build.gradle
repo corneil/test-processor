@@ -1,8 +1,15 @@
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.apache.commons.text.StringEscapeUtils
+import org.gradle.api.tasks.StopActionException
+
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
+        classpath 'org.apache.commons:commons-text:1.12.0'
+
         if ('true' == project.findProperty('useNative')) {
             classpath 'org.graalvm.buildtools:native-gradle-plugin:0.10.2'
         }
@@ -70,14 +77,21 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform {
         def tag = findProperty("tag")
-        if(tag) {
+        if (tag) {
             includeTags tag
         }
-        forkEvery Integer.parseInt(project.findProperty('fork')?: "0")
+        forkEvery Integer.parseInt(project.findProperty('fork') ?: "1")
     }
     testLogging {
         showStandardStreams = true
         events('standardOut', 'started', 'passed', 'skipped', 'failed')
     }
+    reports {
+        junitXml.outputLocation = layout.buildDirectory.dir("test-junit-xml")
+    }
 }
 
+bootBuildImage {
+    pullPolicy = 'IF_NOT_PRESENT'
+    imageName = "${project.name}:latest"
+}

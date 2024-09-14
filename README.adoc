@@ -1,4 +1,7 @@
-= Getting Started
+= Demonstrate bugs
+
+This project was initially build to test native processor applications.
+I discover a problem with `@ServiceConnection` and the recommended use of `@ConfigurationProperties` for Kotlin
 
 == Running Tests
 
@@ -9,98 +12,81 @@ cd java
 ./gradlew test -Ptag=integration          <2>
 ./gradlew test -Ptag=integration -Pfork=1 <3>
 ./gradlew test                            <4>
-./gradlew test -Pfork=1                   <5>
+./gradlew test -Pfork=0                   <5>
 
 cd ../kotlin
 ./gradlew test -Ptag=test                 <6>
 ./gradlew test -Ptag=integration          <7>
 ./gradlew test                            <8>
-./gradlew test -Pfork=1                   <9>
+./gradlew test -Pfork=0                   <9>
 ----
 
 <1> Java - execute `MockBinderTest` only
 <2> Java - execute all tests in `com.example.testprocessor.testcontainers`
 <3> Java - execute all tests in `com.example.testprocessor.testcontainers`, but use new JVM for each test
-<4> Java - execute all tests
-<5> Java - execute all tests, but use new JVM for each test
+<4> Java - execute all tests with forkEvery 1
+<5> Java - execute all tests with forkEvery 0
 <6> Kotlin - execute `MockBinderTest` only
 <7> Kotlin - execute all tests in `com.example.testprocessor.testcontainers`
-<8> Kotlin - execute all tests
-<9> Kotlin - execute all tests, but use new JVM for each test
+<8> Kotlin - execute all tests, but use new JVM for each test
+<9> Kotlin - execute all tests with forkEvery 0
 
+== Scripts
 
-== Reference Documentation
+* `build-test.sh` will build Java and Kotlin version and execute tests. Expect failure in `com.example.testprocessor.testcontainers.TestProcessorServiceConnectionTests`
+* `build-fail.sh` will build Java and Kotlin version and execute tests Expect many failures
+* `build-images.sh` will build container images for both versions
+* `inspect-images.sh` will extract the configuration json label and check for presence of expected properties.
 
-For further reference, please consider the following sections:
+== Conclusions
+The expectation from `@ConfigurationProperties` is to produce a JSON file
+[source,json]
+....
+{
+  "groups": [
+    {
+      "name": "com.example.testprocessor",
+      "type": "com.example.testprocessor.TestConfiguration",
+      "sourceType": "com.example.testprocessor.TestConfiguration"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.example.testprocessor.addition",
+      "type": "java.lang.String",
+      "description": "Will be added to name to make fullName",
+      "sourceType": "com.example.testprocessor.TestConfiguration"
+    }
+  ],
+  "hints": []
+}
+....
 
-* https://docs.gradle.org[Official Gradle documentation]
-* https://docs.spring.io/spring-boot/3.3.3/gradle-plugin[Spring Boot Gradle Plugin Reference Guide]
-* https://docs.spring.io/spring-boot/3.3.3/gradle-plugin/packaging-oci-image.html[Create an OCI image]
-* https://docs.spring.io/spring-boot/3.3.3/reference/packaging/native-image/introducing-graalvm-native-images.html[GraalVM Native Image Support]
-* https://docs.spring.io/spring-boot/3.3.3/reference/testing/testcontainers.html#testing.testcontainers[Spring Boot Testcontainers support]
-* https://java.testcontainers.org/modules/kafka/[Testcontainers Kafka Modules Reference Guide]
-* https://docs.spring.io/spring-boot/docs/3.3.3/reference/htmlsingle/index.html#actuator[Spring Boot Actuator]
-* https://docs.spring.io/spring-cloud-function/docs/current/reference/html/spring-cloud-function.html[Function]
-* https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#spring-cloud-stream-overview-introducing[Cloud Stream]
-* https://docs.spring.io/spring-boot/docs/3.3.3/reference/htmlsingle/index.html#appendix.configuration-metadata.annotation-processor[Spring Configuration Processor]
-* https://docs.spring.io/spring-boot/docs/3.3.3/reference/htmlsingle/index.html#messaging.kafka[Spring for Apache Kafka]
-* https://docs.spring.io/spring-boot/docs/3.3.3/reference/htmlsingle/index.html#actuator.metrics.export.prometheus[Prometheus]
-* https://java.testcontainers.org/[Testcontainers]
+To create Kotlin `@ConfigurationProperties` annotated classes to work properly the recommended definition is incorrect.
 
-== Guides
+=== Recommendation
+[source,kotlin]
+....
+@ConfigurationProperties(prefix = "com.example.testprocessor")
+data class TestConfiguration(
+    /**
+     * Will be added to name to make fullName
+     */
+    val addition: String = "N/A"
+)
+....
 
-The following guides illustrate how to use some features concretely:
-
-* https://spring.io/guides/gs/actuator-service/[Building a RESTful Web Service with Spring Boot Actuator]
-
-== Additional Links
-
-These additional references should also help you:
-
-* https://scans.gradle.com#gradle[Gradle Build Scans – insights for your project's build]
-* https://docs.spring.io/spring-boot/3.3.3/how-to/aot.html[Configure AOT settings in Build Plugin]
-* https://github.com/spring-cloud/spring-cloud-function/tree/main/spring-cloud-function-samples[Various sample apps using Spring Cloud Function]
-
-== GraalVM Native Support
-
-This project has been configured to let you generate either a lightweight container or a native executable.
-It is also possible to run your tests in a native image.
-
-The useNative properties in `gradle.properties` can be changed permanently or invoked as follows:
-
-[source,shell]
-----
-./gradlew bootBuildImage -PuseNative=true
-----
-
-=== Lightweight Container with Cloud Native Buildpacks
-
-If you're already familiar with Spring Boot container images support, this is the easiest way to get started.
-Docker should be installed and configured on your machine prior to creating the image.
-
-To create the image, run the following goal:
-
-[source,shell]
-----
-./gradlew bootBuildImage
-----
-
-=== Gradle Toolchain support
-
-There are some limitations regarding Native Build Tools and Gradle toolchains.
-Native Build Tools disable toolchain support by default.
-Effectively, native image compilation is done with the JDK used to execute Gradle.
-You can read more about https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html#configuration-toolchains[toolchain support in the Native Build Tools here].
-
-=== Testcontainers support
-
-This project uses https://docs.spring.io/spring-boot/3.3.3/reference/features/dev-services.html#features.dev-services.testcontainers[Testcontainers at development time].
-
-Testcontainers has been configured to use the following Docker images:
-
-* https://hub.docker.com/r/confluentinc/cp-kafka[`confluentinc/cp-kafka:latest`]
-
-Please review the tags of the used images and set them to the same as you're running in production.
+=== Working version
+[source,kotlin]
+....
+@ConfigurationProperties(prefix = "com.example.testprocessor")
+class TestConfiguration {
+    /**
+     * Will be added to name to make fullName
+     */
+    var addition: String = "N/A"
+}
+....
 
 == SCDF Configuration
 
@@ -120,7 +106,7 @@ _The image may not load in kind or minikube if there is a pod running that was c
 [source,shell]
 ----
 source ./deploy/k8s/export-dataflow-ip.sh
-./deploy/k8s/load-image.sh "example.com/library/test-processor-kotlin:latest" true
+./deploy/k8s/load-image.sh "test-processor-kotlin:latest" true
 ----
 
 Register application and deploy stream.

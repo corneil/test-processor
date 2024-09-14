@@ -4,7 +4,7 @@ set -euo pipefail
 readonly SCDF_SHELL="${SCDF_SHELL:?must be set}"
 readonly K8S_DIR=$(realpath "$SCDF_SHELL/../k8s")
 
-"$K8S_DIR/load-image.sh" "example.com/library/test-processor:latest" true
+"$K8S_DIR/load-image.sh" "test-processor-java:latest" true
 
 cat > ./register-app.shell <<EOF
 app register --uri docker:example.com/library/test-processor:latest --name test-processor --type processor --force
