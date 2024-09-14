@@ -3,6 +3,13 @@
 This project was initially build to test native processor applications.
 I discover a problem with `@ServiceConnection` and the recommended use of `@ConfigurationProperties` for Kotlin
 
+== Scripts
+
+* `build-test.sh` will build Java and Kotlin version and execute tests. Expect failure in `com.example.testprocessor.testcontainers.TestProcessorServiceConnectionTests`
+* `build-fail.sh` will build Java and Kotlin version and execute tests Expect many failures
+* `build-images.sh` will build container images for both versions
+* `inspect-images.sh` will extract the configuration json label and check for presence of expected properties.
+
 == Running Tests
 
 [source,shell]
@@ -30,13 +37,6 @@ cd ../kotlin
 <7> Kotlin - execute all tests in `com.example.testprocessor.testcontainers`
 <8> Kotlin - execute all tests, but use new JVM for each test
 <9> Kotlin - execute all tests with forkEvery 0
-
-== Scripts
-
-* `build-test.sh` will build Java and Kotlin version and execute tests. Expect failure in `com.example.testprocessor.testcontainers.TestProcessorServiceConnectionTests`
-* `build-fail.sh` will build Java and Kotlin version and execute tests Expect many failures
-* `build-images.sh` will build container images for both versions
-* `inspect-images.sh` will extract the configuration json label and check for presence of expected properties.
 
 == Conclusions
 The expectation from `@ConfigurationProperties` is to produce a JSON file
@@ -67,7 +67,7 @@ To create Kotlin `@ConfigurationProperties` annotated classes to work properly t
 === Recommendation
 [source,kotlin]
 ....
-@ConfigurationProperties(prefix = "com.example.testprocessor")
+@ConfigurationProperties2(prefix = "com.example.testprocessor2")
 data class TestConfiguration(
     /**
      * Will be added to name to make fullName
@@ -88,6 +88,24 @@ class TestConfiguration {
 }
 ....
 
+Produced org.springframework.cloud.dataflow.spring-configuration-metadata.json
+[source,json]
+....
+{
+  "groups": [
+    { "name": "com.example.testprocessor", "type": "com.example.testprocessor.TestConfiguration", "sourceType": "com.example.testprocessor.TestConfiguration" },
+    { "name": "com.example.testprocessor2", "type": "com.example.testprocessor.TestConfiguration2", "sourceType": "com.example.testprocessor.TestConfiguration2" }
+  ],
+  "properties": [
+    {
+      "name": "com.example.testprocessor.addition",
+      "type": "java.lang.String",
+      "description": "Will be added to name to make fullName",
+      "sourceType": "com.example.testprocessor.TestConfiguration"
+    }
+  ]
+}
+....
 == SCDF Configuration
 
 Build the container
