@@ -26,3 +26,10 @@ class TestConfiguration {
 data class TestInput(val name: String, val value: Double)
 data class TestOutput(val name: String, val value: Double, val fullName: String)
 
+@ConfigurationProperties(prefix = "com.example.testprocessor2")
+class TestConfiguration2(
+    /**
+     * Will be added to name to make fullName
+     */
+    val addition: String = "N/A"
+)

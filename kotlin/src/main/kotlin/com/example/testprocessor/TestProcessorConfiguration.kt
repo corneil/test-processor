@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import java.util.function.Function
 
 @Configuration
-@EnableConfigurationProperties(TestConfiguration::class)
+@EnableConfigurationProperties(TestConfiguration::class, TestConfiguration2::class)
 class TestProcessorConfiguration {
     companion object {
         val logger = LoggerFactory.getLogger(TestProcessorConfiguration::class.java)
