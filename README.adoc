@@ -5,10 +5,10 @@ I discover a problem with `@ServiceConnection` and the recommended use of `@Conf
 
 == Scripts
 
-* `build-test.sh` will build Java and Kotlin version and execute tests. Expect failure in `com.example.testprocessor.testcontainers.TestProcessorServiceConnectionTests`
-* `build-fail.sh` will build Java and Kotlin version and execute tests Expect many failures
-* `build-images.sh` will build container images for both versions
-* `inspect-images.sh` will extract the configuration json label and check for presence of expected properties.
+* `build-test.sh` - will build Java and Kotlin version and execute tests. Expect failure in `com.example.testprocessor.testcontainers.TestProcessorServiceConnectionTests`
+* `build-fail.sh` - will build Java and Kotlin version and execute tests Expect many failures
+* `build-images.sh` - will build container images for both versions
+* `inspect-images.sh` _requires_ `yq` - will extract the configuration json label and check for presence of expected properties.
 
 == Running Tests
 
