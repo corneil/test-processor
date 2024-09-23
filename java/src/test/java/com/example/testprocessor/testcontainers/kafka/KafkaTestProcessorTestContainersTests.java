@@ -1,4 +1,4 @@
-package com.example.testprocessor.testcontainers;
+package com.example.testprocessor.testcontainers.kafka;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -8,7 +8,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
-public class TestProcessorTestContainersTests extends TestProcessorTestBase {
+public class KafkaTestProcessorTestContainersTests extends KafkaTestProcessorTestBase {
     @Container
     static KafkaContainer kafkaContainer = createKafkaContainer();
 

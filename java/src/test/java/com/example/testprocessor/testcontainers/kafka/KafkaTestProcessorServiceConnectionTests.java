@@ -1,14 +1,18 @@
-package com.example.testprocessor.testcontainers;
+package com.example.testprocessor.testcontainers.kafka;
 
-import com.example.testprocessor.testcontainers.TestProcessorServiceConnectionTests.TestServiceConnectionsConfiguration;
+import com.example.testprocessor.testcontainers.kafka.KafkaTestProcessorServiceConnectionTests.TestServiceConnectionsConfiguration;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.testcontainers.containers.KafkaContainer;
 
 @Import(TestServiceConnectionsConfiguration.class)
-public class TestProcessorServiceConnectionTests extends TestProcessorTestBase {
+@Testcontainers
+class KafkaTestProcessorServiceConnectionTests extends KafkaTestProcessorTestBase {
+
     @TestConfiguration(proxyBeanMethods = false)
     static class TestServiceConnectionsConfiguration {
         @Bean

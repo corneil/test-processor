@@ -2,6 +2,8 @@ package com.example.testprocessor
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.bind.DefaultValue
+import org.springframework.boot.context.properties.bind.Name
 import java.util.function.Function
 
 val logger = LoggerFactory.getLogger(TestProcessor::class.java)
@@ -20,6 +22,8 @@ class TestConfiguration {
     /**
      * Will be added to name to make fullName
      */
+    @setparam:DefaultValue("N/A")
+    @setparam:Name("addition")
     var addition: String = "N/A"
 }
 
@@ -31,5 +35,7 @@ class TestConfiguration2(
     /**
      * Will be added to name to make fullName
      */
+    @DefaultValue("N/A")
+    @Name("addition")
     val addition: String = "N/A"
 )

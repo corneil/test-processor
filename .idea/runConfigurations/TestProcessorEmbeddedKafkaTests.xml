@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="TestProcessorEmbeddedKafkaTests" type="JUnit" factoryName="JUnit">
-    <module name="testprocessor-java.test" />
+    <module name="test-processor-java.test" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false" />
       <option name="IS_SUBST" value="false" />
@@ -16,8 +16,8 @@
       <option name="region" />
       <option name="useCurrentConnection" value="false" />
     </extension>
-    <option name="PACKAGE_NAME" value="com.example.testprocessor.testcontainers" />
-    <option name="MAIN_CLASS_NAME" value="com.example.testprocessor.testcontainers.TestProcessorEmbeddedKafkaTests" />
+    <option name="PACKAGE_NAME" value="com.example.testprocessor.testcontainers.kafka" />
+    <option name="MAIN_CLASS_NAME" value="com.example.testprocessor.testcontainers.kafka.KafkaKafkaTestProcessorEmbeddedTests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <method v="2">

@@ -1,11 +1,10 @@
-package com.example.testprocessor.testcontainers;
+package com.example.testprocessor.testcontainers.kafka;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @TestConfiguration(proxyBeanMethods = false)
-class TestListenerConfiguration {
+class KafkaTestListenerConfiguration {
     @Bean
     KafkaListenerContainer kafkaListener() {
         return new KafkaListenerContainer();

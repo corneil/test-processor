@@ -19,7 +19,11 @@ for FOLDER in $FOLDERS; do
   jq -r '.[] | .Config.Labels | ."org.springframework.boot.spring-configuration-metadata.json"' inspect-$FOLDER.json > org.springframework.boot.spring-configuration-metadata-$FOLDER.json
   jq  -r '.[] | .Config.Labels | ."org.springframework.cloud.dataflow.spring-configuration-metadata.json"' inspect-$FOLDER.json > org.springframework.cloud.dataflow.spring-configuration-metadata-$FOLDER.json
   test_content org.springframework.boot.spring-configuration-metadata-$FOLDER.json "com.example.testprocessor.addition"
+  test_content org.springframework.boot.spring-configuration-metadata-$FOLDER.json "N/A"
   test_content org.springframework.cloud.dataflow.spring-configuration-metadata-$FOLDER.json "com.example.testprocessor.addition"
+  test_content org.springframework.cloud.dataflow.spring-configuration-metadata-$FOLDER.json "N/A"
 done
 test_content org.springframework.boot.spring-configuration-metadata-kotlin.json "com.example.testprocessor2.addition"
+test_content org.springframework.boot.spring-configuration-metadata-kotlin.json "N/A"
 test_content org.springframework.cloud.dataflow.spring-configuration-metadata-kotlin.json "com.example.testprocessor2.addition"
+test_content org.springframework.cloud.dataflow.spring-configuration-metadata-kotlin.json "N/A"

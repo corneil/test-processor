@@ -1,4 +1,4 @@
-package com.example.testprocessor.testcontainers;
+package com.example.testprocessor.testcontainers.kafka;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 
-public class KafkaListenerContainer {
+class KafkaListenerContainer {
     private static final Logger logger = LoggerFactory.getLogger(KafkaListenerContainer.class);
     private final ConcurrentLinkedQueue<ConsumerRecord<String, Object>> messages = new ConcurrentLinkedQueue<>();
 
