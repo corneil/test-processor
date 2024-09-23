@@ -17,7 +17,7 @@
       <option name="useCurrentConnection" value="false" />
     </extension>
     <option name="PACKAGE_NAME" value="com.example.testprocessor.testcontainers.kafka" />
-    <option name="MAIN_CLASS_NAME" value="com.example.testprocessor.testcontainers.kafka.KafkaKafkaTestProcessorEmbeddedTests" />
+    <option name="MAIN_CLASS_NAME" value="com.example.testprocessor.testcontainers.kafka.KafkaTestProcessorEmbeddedTests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <method v="2">
